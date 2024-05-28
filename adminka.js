@@ -3,20 +3,27 @@ function krestik() {
   sec.style = "display:none";
 }
 
-function sendDataToServer(title, description, type, price) {
-  const data = {
-    title: title,
-    description: description,
-    type: type,
-    price: price,
-  };
+function sendDataToServer(title, description, type, price, image) {
+  // const data = {
+  //   title: title,
+  //   description: description,
+  //   type: type,
+  //   price: price,
+  //   image: image,
+  // };
+  const data = new FormData();
+  data.append("image", image);
+  data.append("title", title);
+  data.append("description", description);
+  data.append("type", type);
+  data.append("price", price);
 
   fetch("http://localhost:3000/products", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
+    // headers: {
+    //   "Content-Type": "application/json",
+    // },
+    body: data,
   })
     .then(() => {
       console.log("Дані успішно відправлені на сервер");
