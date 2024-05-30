@@ -1,5 +1,3 @@
-//const { del } = require("express/lib/application");
-
 window.onload = function () {
   addContent();
 };
@@ -9,7 +7,7 @@ function addContent() {
   fetch("http://localhost:3000/products")
     .then((response) => {
       if (!response.ok) {
-        throw new Error("Network response was not ok"); // Додано перевірку на успішність відповіді
+        throw new Error("Network response was not ok"); //перевірка  на успішність відповіді
       }
       return response.json();
     })
@@ -70,16 +68,17 @@ function addContent() {
         descriptionSpan.textContent = data[i].description;
 
         // Перевірка наявності зображення
-        // --------------------- ЗАМІНИТИ ССИЛКУ ТУТ, КОЛИ ПІДГОТУЮ РОУТ ДЛЯ ЗОБРАЖЕНЬ -------------
-        if (data[i].img && data[i].img.path) {
+        if (data[i].image) {
           const imgElement = document.createElement("img");
-          imgElement.src = "http://localhost:3000/products/" + data[i].img.path; // Встановлення src для зображення
+
+          imgElement.src = "http://localhost:3000/" + data[i].image; // Встановлення src для зображення
           imgElement.className = "imageContent"; // Встановлення класу
           newDiv.appendChild(imgElement); // Додавання зображення до newDiv
         }
         // create edit button
         const editBtn = document.createElement("button");
         editBtn.textContent = "edit";
+        editBtn.className = "editButton";
 
         //create container for button "del and edit"
         const parrentBtn = document.createElement("div");
@@ -95,8 +94,17 @@ function addContent() {
         newDiv.appendChild(price);
         // Додавання нового діву до вмісту
         contentDiv.appendChild(newDiv);
+
+        // Обробка отриманих даних для кнопки едіт
+
+        // eb.forEach((element) => element.addEventListener("click", ()=>{
+
+        //}));
+        editBtn.addEventListener("click", (e) => {
+          console.log(data[i]._id);
+          editProduct(e, data[i]._id);
+        });
       }
-      // Обробка отриманих даних
     })
     .catch((error) => {
       console.error("Помилка:", error);

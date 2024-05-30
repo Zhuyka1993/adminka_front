@@ -4,13 +4,6 @@ function krestik() {
 }
 
 function sendDataToServer(title, description, type, price, image) {
-  // const data = {
-  //   title: title,
-  //   description: description,
-  //   type: type,
-  //   price: price,
-  //   image: image,
-  // };
   const data = new FormData();
   data.append("image", image);
   data.append("title", title);
@@ -25,7 +18,7 @@ function sendDataToServer(title, description, type, price, image) {
     // },
     body: data,
   })
-    .then(() => {
+    .then((data) => {
       console.log("Дані успішно відправлені на сервер");
       // Додаткові дії при успішній відправці
     })
@@ -57,48 +50,77 @@ function pop() {
     // Відправка даних на сервер
     sendDataToServer(title, description, type, price, image);
 
-    const contentDiv = document.querySelector(".content");
-    const newDiv = document.createElement("div");
-    newDiv.className = "boxContent " + type;
-
-    const titleElement = document.createElement("span");
-    titleElement.className = "titleContent";
-    titleElement.textContent = title;
-
-    const price1 = document.createElement("span");
-    price1.className = "price";
-    price1.textContent = "Ціна:" + price + " грн.";
-
-    const descriptionSpan = document.createElement("span");
-    descriptionSpan.className = "descriptionContent";
-    descriptionSpan.textContent = description;
-
-    //const imgElement = document.createElement("img");
-    //imgElement.className = "imageContent"; // Встановлення класу
-    //imgElement.src = URL.createObjectURL(img);
-
-    //newDiv.appendChild(imgElement);
-
-    const editBtn = document.createElement("button");
-    editBtn.textContent = "edit";
-    const delBtn = document.createElement("button");
-    delBtn.textContent = "del";
-
-    //create container for button "del and edit"
-    const parrentBtn = document.createElement("div");
-    parrentBtn.className = "parrentBtn";
-    parrentBtn.appendChild(editBtn);
-    parrentBtn.appendChild(delBtn);
-
-    // Додавання елементів до нового діву
-
-    newDiv.appendChild(parrentBtn);
-    newDiv.appendChild(titleElement);
-    newDiv.appendChild(descriptionSpan);
-    newDiv.appendChild(price1);
-    // Додавання нового діву до вмісту
-    contentDiv.appendChild(newDiv);
-
     document.querySelector(".section").style = "display:none";
   });
+}
+
+// Функція едіту
+function updateProductToServer(id, title, description, type, price, image) {
+  const data = new FormData();
+  if (image) data.append("image", image);
+  data.append("title", title);
+  data.append("description", description);
+  data.append("type", type);
+  data.append("price", price);
+
+  fetch(`http://localhost:3000/products/${id}`, {
+    method: "PUT",
+    body: data,
+  })
+    .then((response) => {
+      if (response.ok) {
+        console.log("Дані продукту оновлено");
+      } else {
+        console.error("Помилка при оновленні даних:", response.status);
+      }
+    })
+    .catch((error) => {
+      console.error("Помилка при оновленні даних:", error);
+    });
+}
+
+//Функція едіту
+
+function editProduct(e, id) {
+  console.log("BBBB");
+  const productDiv = e.target.closest(".boxContent");
+  const productId = productDiv.dataset.id; // Використання правильного ідентифікатора
+  document.querySelector(".section").style.display = "block";
+  // Убрать кнопку "отправить" добавить кнопку "изменить"(класс btnSave),  (уже наверное накинул на const saveBtn) -на єту кнопку накинуть онклик
+
+  const type = document.querySelector('select[name="type"]').value;
+
+  const title = document.getElementById("titleInput").value;
+  const description = document.getElementById("descriptionInput").value;
+  const price = document.getElementById("priceInput").value;
+  // Передача URL-адреси зображення, якщо вона є
+  const image = document.getElementById("imageInput").files[0];
+
+  document.getElementById("titleInput").value = title;
+  document.getElementById("descriptionInput").value = description;
+  document.querySelector('select[name="type"]').value = type;
+  document.getElementById("priceInput").value = price;
+  document.getElementById("imageInput").files[0] = image;
+
+  const btnAdd = document.querySelector(".btnAdd");
+  btnAdd.style.display = "none";
+  const saveBtn = document.querySelector(".btnSave");
+  saveBtn.style.display = "block";
+  saveBtn.addEventListener(
+    "click",
+    () => {
+      // Отримати доступ до елемента select за допомогою його name або іншого атрибуту
+      const type = document.querySelector('select[name="type"]').value;
+
+      const title = document.getElementById("titleInput").value;
+      const description = document.getElementById("descriptionInput").value;
+      const price = document.getElementById("priceInput").value;
+      // Передача URL-адреси зображення, якщо вона є
+      const image = document.getElementById("imageInput").files[0];
+
+      // Відправка даних на сервер
+      updateProductToServer(id, title, description, type, price, image);
+    },
+    { once: true }
+  );
 }
