@@ -20,7 +20,6 @@ function addContent() {
         const contentDiv = document.querySelector(".content");
         const newDiv = document.createElement("div");
         newDiv.className = "boxContent " + "unic" + i + " " + data[i].type;
-        console.log(type.options[type.selectedIndex].text);
 
         // Створення елементів для відображення контенту
         const titleElement = document.createElement("span");
@@ -56,8 +55,6 @@ function addContent() {
           };
           //remove from array and from DOM
           data.splice(i, 1);
-
-          // e.currentTarget.remove();
 
           const block = document.querySelector(".unic" + i);
           block.remove();
@@ -97,9 +94,6 @@ function addContent() {
 
         // Обробка отриманих даних для кнопки едіт
 
-        // eb.forEach((element) => element.addEventListener("click", ()=>{
-
-        //}));
         editBtn.addEventListener("click", (e) => {
           console.log(data[i]._id);
           editProduct(e, data[i]._id);
@@ -115,11 +109,9 @@ function addContent() {
   const title = document.getElementById("titleInput").value;
   const description = document.getElementById("descriptionInput").value;
   // Передача URL-адреси зображення, якщо вона є
-  const img = document.getElementById("imageInput").files[0];
 
   // Перевірка заповненості полів
   if (title.length > 0 && description.length > 0) {
-    const contentDiv = document.querySelector(".content");
     const newDiv = document.createElement("div");
     newDiv.className = "boxContent";
 
@@ -135,8 +127,6 @@ function addContent() {
 
 function clear() {
   const allElements = document.querySelectorAll(".boxContent");
-  console.log("click");
-  console.log(allElements);
   allElements.forEach((element) => {
     element.style.display = "none";
   });
@@ -148,8 +138,6 @@ const buttonAll = document.querySelector(".all");
 buttonAll.onclick = f;
 function f() {
   const allElements = document.querySelectorAll(".boxContent");
-  console.log("click");
-  console.log(allElements);
   allElements.forEach((element) => {
     element.style.display = "flex";
   });
@@ -163,8 +151,6 @@ buttonCoffe.onclick = b;
 function b() {
   clear();
   const allElements = document.querySelectorAll(".coffee");
-  console.log("click");
-  console.log(allElements);
   allElements.forEach((element) => {
     element.style.display = "flex";
   });
@@ -177,8 +163,6 @@ buttonTea.onclick = c;
 function c() {
   clear();
   const allElements = document.querySelectorAll(".tea");
-  console.log("click");
-  console.log(allElements);
   allElements.forEach((element) => {
     element.style.display = "flex";
   });
@@ -190,8 +174,6 @@ buttonCoctail.onclick = d;
 function d() {
   clear();
   const allElements = document.querySelectorAll(".coctail");
-  console.log("click");
-  console.log(allElements);
   allElements.forEach((element) => {
     element.style.display = "flex";
   });
@@ -204,9 +186,7 @@ const buttonCakes = document.querySelector(".cakes");
 buttonCakes.onclick = e;
 function e() {
   clear();
-  const allElements = document.querySelectorAll(".cake");
-  console.log("click");
-  console.log(allElements);
+  const allElements = document.querySelectorAll(".cakes");
   allElements.forEach((element) => {
     element.style.display = "flex";
   });
